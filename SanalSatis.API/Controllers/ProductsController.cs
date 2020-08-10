@@ -33,5 +33,19 @@ namespace SanalSatis.API.Controllers
         {
             return await _repository.GetProductByIdAsync(id);
         }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
+        {
+            //Core Doğrudan IReadOnlyList döndürmeye izin vermediği için ok response içerisine yazıyoruz.
+            return Ok(await _repository.GetProductBrandsAsync());
+        }
+        
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+        {
+           
+            return Ok(await _repository.GetProductTypesAsync());
+        }
     }
 }

@@ -8,7 +8,7 @@ using SanalSatis.Infrastructure.DataAccess;
 namespace SanalSatis.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20200809172607_InitialCreate")]
+    [Migration("20200809211020_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,9 +24,8 @@ namespace SanalSatis.Infrastructure.DataAccess.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(250);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Name")
                         .IsRequired()

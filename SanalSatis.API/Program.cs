@@ -25,6 +25,7 @@ namespace SanalSatis.API
                 {
                     var context = services.GetRequiredService<ProjectContext>();
                     await context.Database.MigrateAsync();
+                    await ProjectContextSeed.SeedAsync(context, loggerFactory);
                 }
                 catch (Exception ex)
                 {

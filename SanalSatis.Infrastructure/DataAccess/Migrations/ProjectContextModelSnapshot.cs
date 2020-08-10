@@ -22,9 +22,8 @@ namespace SanalSatis.Infrastructure.DataAccess.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(250);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Name")
                         .IsRequired()
