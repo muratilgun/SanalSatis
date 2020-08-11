@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SanalSatis.API.Extensions;
 using SanalSatis.API.Helpers;
+using SanalSatis.API.Middleware;
 using SanalSatis.Infrastructure.DataAccess;
-using SanalSatis.Kernel.Interfaces;
 
 namespace SanalSatis.API
 {
@@ -24,11 +25,13 @@ namespace SanalSatis.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
+            
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             services.AddDbContext<ProjectContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddApplicationServices();
+            services.AddSwaggerDocumentation();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +41,10 @@ namespace SanalSatis.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            //önemli
+            app.UseMiddleware<ExceptionMiddleware>();
+            //hata işleyici middleware
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseHttpsRedirection();
 
@@ -47,6 +54,8 @@ namespace SanalSatis.API
             app.UseStaticFiles();
 
             app.UseAuthorization();
+            
+            app.UseSwaggerDocumention();
 
             app.UseEndpoints(endpoints =>
             {

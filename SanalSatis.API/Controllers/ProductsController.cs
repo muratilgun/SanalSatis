@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SanalSatis.API.Dtos;
+using SanalSatis.API.Errors;
 using SanalSatis.Infrastructure.DataAccess;
 using SanalSatis.Kernel.Entities;
 using SanalSatis.Kernel.Interfaces;
@@ -12,9 +14,8 @@ using SanalSatis.Kernel.Specification;
 
 namespace SanalSatis.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+
+    public class ProductsController : BaseApiController
     {
 
         private readonly IGenericRepository<Product> _productsRepo;
@@ -29,8 +30,6 @@ namespace SanalSatis.API.Controllers
             _productTypeRepo = productTypeRepo;
             _productBrandRepo = productBrandRepo;
             _productsRepo = productsRepo;
-
-
         }
 
         [HttpGet]
@@ -41,14 +40,17 @@ namespace SanalSatis.API.Controllers
             var products = await _productsRepo.ListAsync(spec);
 
             return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products));
-
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)] //başarılı olduğunu zaman ! swagger için default
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)] //başarısız olduğu zaman
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productsRepo.GetEntityWithSpec(spec);
+            //response içerisinde hata yönetimi
+            if (product == null) return NotFound(new ApiResponse(404));
             return _mapper.Map<Product, ProductToReturnDto>(product);
         }
 
