@@ -31,6 +31,13 @@ namespace SanalSatis.API
             services.AddDbContext<ProjectContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
+            services.AddCors(opt => 
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                  policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");   
+                });
+            });
            
         }
 
@@ -52,6 +59,8 @@ namespace SanalSatis.API
 
             //statik dosyaları apiye gönderiyoruz resim vs..
             app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
             
