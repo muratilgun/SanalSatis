@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SanalSatis.API.Errors;
 using SanalSatis.Infrastructure.DataAccess;
@@ -11,6 +12,13 @@ namespace SanalSatis.API.Controllers
         {
             _context = context;
 
+        }
+
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText()
+        {
+            return "secret stuff";
         }
 
         [HttpGet("notfound")]

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SanalSatis.Infrastructure.DataAccess;
+using SanalSatis.Infrastructure.Identity;
+using SanalSatis.Kernel.Entities.Identity;
 
 namespace SanalSatis.API
 {
@@ -26,6 +29,11 @@ namespace SanalSatis.API
                     var context = services.GetRequiredService<ProjectContext>();
                     await context.Database.MigrateAsync();
                     await ProjectContextSeed.SeedAsync(context, loggerFactory);
+
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+                    await identityContext.Database.MigrateAsync();
+                    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
                 }
                 catch (Exception ex)
                 {

@@ -7,7 +7,7 @@ namespace SanalSatis.Infrastructure.DataAccess
 {
     public class ProjectContext : DbContext
     {
-        public ProjectContext(DbContextOptions options) : base(options)
+        public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {
 
         }
