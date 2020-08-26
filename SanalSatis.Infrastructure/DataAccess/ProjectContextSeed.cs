@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SanalSatis.Kernel.Entities;
+using SanalSatis.Kernel.Entities.OrderAggregate;
 
 namespace SanalSatis.Infrastructure.DataAccess
 {
@@ -53,6 +54,19 @@ namespace SanalSatis.Infrastructure.DataAccess
                     foreach (var item in products)
                     {
                         context.Products.Add(item);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                if (!context.DeliveryMethods.Any())
+                {
+                    var dmData = File.ReadAllText("../SanalSatis.Infrastructure/DataAccess/SeedData/delivery.json");
+                    var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(dmData);
+
+                    foreach (var item in methods)
+                    {
+                        context.DeliveryMethods.Add(item);
                     }
 
                     await context.SaveChangesAsync();
