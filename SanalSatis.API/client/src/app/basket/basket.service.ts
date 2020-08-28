@@ -22,9 +22,24 @@ export class BasketService {
   constructor(private http: HttpClient) { }
 
   // tslint:disable-next-line: typedef
+  createPaymentIntent()
+  {
+    return this.http.post(this.baseUrl + 'payments/' + this.getCurrrentBasketValue().id, {})
+      .pipe(
+        map((basket: IBasket) => {
+          this.basketSource.next(basket);
+          })
+      );
+  }
+
+  // tslint:disable-next-line: typedef
   setShippingPrice(deliveryMethod: IDeliveryMethod) {
     this.shipping = deliveryMethod.price;
+    const basket = this.getCurrrentBasketValue();
+    basket.deliveryMethodId = deliveryMethod.id;
+    basket.shippingPrice = deliveryMethod.price;
     this.calculateTotals();
+    this.setBasket(basket);
   }
 
   // tslint:disable-next-line: typedef
@@ -33,6 +48,7 @@ export class BasketService {
     .pipe(
       map((basket: IBasket) => {
         this.basketSource.next(basket);
+        this.shipping = basket.shippingPrice;
         this.calculateTotals();
       })
     );
