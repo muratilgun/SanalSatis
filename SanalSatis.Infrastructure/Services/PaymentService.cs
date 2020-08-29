@@ -5,7 +5,9 @@ using Microsoft.Extensions.Configuration;
 using SanalSatis.Kernel.Entities;
 using SanalSatis.Kernel.Entities.OrderAggregate;
 using SanalSatis.Kernel.Interfaces;
+using SanalSatis.Kernel.Specification;
 using Stripe;
+using Order = SanalSatis.Kernel.Entities.OrderAggregate.Order;
 using Product = SanalSatis.Kernel.Entities.Product;
 
 namespace SanalSatis.Infrastructure.Services
@@ -74,6 +76,32 @@ namespace SanalSatis.Infrastructure.Services
             await _basketRepository.UpdateBasketAsync(basket);
 
             return basket;
+        }
+
+        public async Task<Order> UpdateOrderPaymentFailed(string paymentIntentId)
+        {
+            var spec = new OrderByPaymentIntentIdSpecification(paymentIntentId);
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+            if(order == null) return null;
+            order.Status = OrderStatus.PaymentFailed;
+            await _unitOfWork.Complete();
+            return order;
+
+        }
+
+        public async Task<Order> UpdateOrderPaymentSucceeded(string paymentIntentId)
+        {
+            var spec = new OrderByPaymentIntentIdSpecification(paymentIntentId);
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            if(order == null) return null;
+
+            order.Status = OrderStatus.PaymentRecevied;
+            _unitOfWork.Repository<Order>().Update(order);
+            await _unitOfWork.Complete();
+
+            return order;
+            
         }
     }
 }

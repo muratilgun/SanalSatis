@@ -23,7 +23,6 @@ export class CheckoutReviewComponent implements OnInit {
   // tslint:disable-next-line: typedef
   createPaymentIntent() {
     return this.basketService.createPaymentIntent().subscribe((response: any) => {
-      this.toastr.success('payment intent created');
       this.appStepper.next();
     }, error => {
       console.log(error);

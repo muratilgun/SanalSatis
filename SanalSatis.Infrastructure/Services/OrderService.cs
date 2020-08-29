@@ -42,7 +42,7 @@ namespace SanalSatis.Infrastructure.Services
             var subtotal = items.Sum(item => item.Price * item.Quantity);
 
             //order kontrolü
-            var spec = new OrderByIntentIdWithItemsSpecification(basket.PaymentIntentId);
+            var spec = new OrderByPaymentIntentIdSpecification(basket.PaymentIntentId);
             var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
 
             if (existingOrder != null)
