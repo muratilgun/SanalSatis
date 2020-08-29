@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,7 @@ namespace SanalSatis.API.Controllers
             _productsRepo = productsRepo;
         }
 
+        [Cached(600)]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams productParams)
         {
@@ -48,7 +50,7 @@ namespace SanalSatis.API.Controllers
 
             return Ok(new Pagination<ProductToReturnDto>(productParams.PageIndex, productParams.PageSize, totalItems, data));
         }
-
+        [Cached(600)]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)] //başarılı olduğunu zaman ! swagger için default
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)] //başarısız olduğu zaman
@@ -60,14 +62,14 @@ namespace SanalSatis.API.Controllers
             if (product == null) return NotFound(new ApiResponse(404));
             return _mapper.Map<Product, ProductToReturnDto>(product);
         }
-
+        [Cached(600)]
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             //Core Doğrudan IReadOnlyList döndürmeye izin vermediği için ok response içerisine yazıyoruz.
             return Ok(await _productBrandRepo.ListAllAsync());
         }
-
+        [Cached(600)]
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
         {
