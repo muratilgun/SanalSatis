@@ -1,9 +1,11 @@
+using System.IO;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using SanalSatis.API.Extensions;
 using SanalSatis.API.Helpers;
@@ -71,6 +73,11 @@ namespace SanalSatis.API
 
             //statik dosyaları apiye gönderiyoruz resim vs..
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Content")
+                ), RequestPath = "/content"
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -84,6 +91,7 @@ namespace SanalSatis.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }
