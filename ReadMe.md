@@ -1,8 +1,5 @@
-**Merhaba, bu projemde bir E-Ticaret API si oluşturdum.**
+**Merhaba, bu projemde yeni teknolojileri kullanmak ve kendimi geliştirmek adına bir E-Ticaret API si oluşturdum.**
 
-
-![](http://g.recordit.co/DRUoKsOfcy.gif)
-![GenelG](http://g.recordit.co/DRUoKsOfcy.gif)
 - **Vs Code**
 - **.Net Core**
 -  **Angular CLI**
