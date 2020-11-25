@@ -2,7 +2,7 @@
 
 
 ![](http://g.recordit.co/DRUoKsOfcy.gif)
-![GenelG](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![GenelG](http://g.recordit.co/DRUoKsOfcy.gif)
 - **Vs Code**
 - **.Net Core**
 -  **Angular CLI**
