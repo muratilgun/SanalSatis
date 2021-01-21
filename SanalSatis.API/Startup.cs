@@ -24,19 +24,34 @@ namespace SanalSatis.API
             _configuration = configuration;
         }
 
-
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            
-            services.AddAutoMapper(typeof(MappingProfiles));
-            services.AddControllers();
             services.AddDbContext<ProjectContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<AppIdentityDbContext>(x =>{
                 x.UseSqlite(_configuration.GetConnectionString("IdentityConnection"));
             });
+
+            ConfigureServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddDbContext<ProjectContext>(x => x.UseMySql(_configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<AppIdentityDbContext>(x =>{
+                x.UseMySql(_configuration.GetConnectionString("IdentityConnection"));
+            });
+
+            ConfigureServices(services);
+        }
+
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            
+            services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddControllers();
 
             services.AddSingleton<IConnectionMultiplexer>(c => {
                 var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"), true);

@@ -4,7 +4,8 @@
 ![](http://g.recordit.co/DRUoKsOfcy.gif)
 - **Vs Code**
 - **.Net Core**
--  **Angular CLI**
+- **Angular CLI**
+- **TypeScript**
 - **SQLite**
 - **Angular Reactive forms**
 - **Bootstrap**

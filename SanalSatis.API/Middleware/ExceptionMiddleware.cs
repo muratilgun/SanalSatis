@@ -34,7 +34,7 @@ namespace SanalSatis.API.Middleware
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
                 var response = _env.IsDevelopment() ? new ApiException((int)HttpStatusCode.InternalServerError,ex.Message, ex.StackTrace.ToString()) 
-                : new ApiException((int)HttpStatusCode.InternalServerError);
+                : new ApiException((int)HttpStatusCode.InternalServerError,ex.Message, ex.StackTrace.ToString());
 
                 //aldığımız hata mesajlarını CamelCase formatında yazmasını sağlayarak daha okunabilir hale getiriyor.
                 var options = new JsonSerializerOptions{PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
