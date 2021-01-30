@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <None Include="\DataAccess\SeedData\**" CopyToOutputDirectory="PresevreNewest" />
+    <None Include="DataAccess\SeedData\**" CopyToOutputDirectory="PreserveNewest"  />
+
     <ProjectReference Include="..\SanalSatis.Kernel\SanalSatis.Kernel.csproj"/>
   </ItemGroup>
   <ItemGroup>

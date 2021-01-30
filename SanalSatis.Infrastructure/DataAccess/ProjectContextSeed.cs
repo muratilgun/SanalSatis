@@ -16,7 +16,7 @@ namespace SanalSatis.Infrastructure.DataAccess
     {
         public static async Task SeedAsync(ProjectContext context, ILoggerFactory loggerFactory)
         {
-            try
+ try
             {
                 var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
